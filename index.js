@@ -27,9 +27,15 @@ async function run() {
       await client.connect();   
 
       const reviewCollection = client.db("hotelDB").collection("review")
+      const roomsCollection = client.db("hotelDB").collection("rooms")
 
       app.get('/review', async(req, res) => {
          const result = await reviewCollection.find().toArray()
+         res.send(result)
+      })
+
+      app.get('/rooms', async(req, res) => {
+         const result = await roomsCollection.find().toArray()
          res.send(result)
       })   
 
