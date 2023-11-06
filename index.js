@@ -74,6 +74,13 @@ async function run() {
          res.send(result)
       })
 
+      app.get('/review/:number', async(req, res) => {
+        const number = req.params.number
+        const query = {room_number: parseInt(number)}
+        const result = await reviewCollection.find(query).toArray()
+        res.send(result)
+      })
+
       app.post('/review', async(req, res) => {
         const query = req.body;
         const result = await reviewCollection.insertOne(query)
