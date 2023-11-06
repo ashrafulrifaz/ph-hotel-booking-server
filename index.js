@@ -74,6 +74,12 @@ async function run() {
          res.send(result)
       })
 
+      app.post('/review', async(req, res) => {
+        const query = req.body;
+        const result = await reviewCollection.insertOne(query)
+        res.send(result)
+      })
+
       app.get('/rooms', async(req, res) => {
          const result = await roomsCollection.find().toArray()
          res.send(result)
