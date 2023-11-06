@@ -86,11 +86,11 @@ async function run() {
         res.send(result)
       })
 
-      app.get('/bookings', logger, verifyToken, async(req, res) => {
-        console.log(req.query.email, req.user.email);
-        if(req?.query?.email !== req?.user?.email){
-          return res.status(401).send({message: 'unothorized access'})
-        }
+      app.get('/bookings', async(req, res) => {
+      //   console.log(req.query.email, req.user.email);
+      //   if(req.query?.email !== req.user?.email) {
+      //     return res.status(403).send({message: 'forbidden access'})
+      //  }
         let query;
         if(req.query?.email){
           query = {email: req.query.email}
@@ -100,9 +100,17 @@ async function run() {
         res.send(result)
       })
 
-      app.post('/bookings', logger, verifyToken, async(req, res) => {
+      app.post('/bookings', async(req, res) => {
         const query = req.body;
         const result = await bookingsCollection.insertOne(query)
+        res.send(result)
+      })
+
+      app.delete('/bookings/:id', async(req, res) => {
+        const id = req.params.id
+        console.log(req.params);
+        const filter = {_id: new ObjectId(id)}
+        const result = await bookingsCollection.deleteOne(filter)
         res.send(result)
       })
 
