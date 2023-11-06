@@ -100,6 +100,14 @@ async function run() {
         res.send(result)
       })
 
+      app.get('/bookings/:number', async(req, res) => {
+        const number = req.params.number
+        const query = {room_number: parseInt(number)}
+        const projection = {checkIn: 1, checkOut: 1, image: 0}
+        const result = await bookingsCollection.find(query, projection).toArray()
+        res.send(result)
+      })
+
       app.post('/bookings', async(req, res) => {
         const query = req.body;
         const result = await bookingsCollection.insertOne(query)
