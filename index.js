@@ -113,6 +113,13 @@ async function run() {
         res.send(result)
       })
 
+      app.get('/user-bookings/:id', async(req, res) => {
+        const id = req.params.id
+        const filter = {_id: new ObjectId(id)}
+        const result = await bookingsCollection.findOne(filter)
+        res.send(result)
+      })
+
       app.get('/bookings/:number', async(req, res) => {
         const number = req.params.number
         const query = {room_number: parseInt(number)}
@@ -124,6 +131,20 @@ async function run() {
       app.post('/bookings', async(req, res) => {
         const query = req.body;
         const result = await bookingsCollection.insertOne(query)
+        res.send(result)
+      })
+
+      app.put('/user-bookings/:id', async(req, res) => {
+        const id = req.params.id
+        const updateBooking = req.body;
+        const filter = {_id: new ObjectId(id)}
+        const booking = {
+           $set: {
+              checkIn: updateBooking.checkIn,
+              checkOut: updateBooking.checkOut
+           }
+        }
+        const result = await bookingsCollection.updateOne(filter, booking)
         res.send(result)
       })
 
