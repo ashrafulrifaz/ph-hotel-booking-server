@@ -59,14 +59,19 @@ async function run() {
         res
         .cookie('token', token, {
           httpOnly: true,
-          secure: true
+          secure: true,
+          sameSite: 'none'
         })
         .send({result: true})
       })
 
       app.post('/logout', async(req, res) => {
         const user = req.body;
-        res.clearCookie('token', {maxAge: 0}).send({success: true})
+        res.clearCookie('token', {
+          maxAge: 0, 
+          sameSite: 'none', 
+          secure: true
+        }).send({success: true})
       })
 
       app.get('/review', async(req, res) => {
